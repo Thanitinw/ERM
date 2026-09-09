@@ -443,7 +443,7 @@ function renderNav(q){
       <button class="nav-item ${i===activeIndex?'active':''} ${dim?'dim':''}" data-domain="${i}" style="--accent:${g.accent};--soft:${g.soft}">
         <span class="nav-badge">${g.num}</span>
         <span class="nav-text">
-          <span class="nav-name">${g.num}. ${g.name}</span>
+          <span class="nav-name">${g.name}</span>
           <span class="nav-count">${g.themes.length} Risk Theme${g.themes.length > 1 ? 's' : ''}</span>
         </span>
       </button>`;
@@ -457,7 +457,7 @@ function renderPanel(index){
     <div class="panel-header">
       <span class="panel-badge">${g.num}</span>
       <div>
-        <div class="panel-name">${g.num}. ${g.name}</div>
+        <div class="panel-name">${g.name}</div>
         <div class="panel-count"><b>${g.themes.length}</b> Risk Theme${g.themes.length > 1 ? 's' : ''}</div>
       </div>
     </div>

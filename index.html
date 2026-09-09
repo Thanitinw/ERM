@@ -17,16 +17,15 @@
     --card: #ffffff;
     --border: #e1e5ef;
     --border-soft: #edf0f6;
-    --chip-bg: #eef2fb;
     --chip-ink: #2b3a63;
     --shadow: 0 1px 2px rgba(20,33,61,.06), 0 8px 24px -12px rgba(20,33,61,.18);
 
-    --c1: #2f6fed; /* Strategic */
-    --c2: #12938a; /* Operational */
-    --c3: #7c4fe0; /* Financial */
-    --c4: #d68a1a; /* Compliance */
-    --c5: #d1425a; /* Technology / Cyber */
-    --c6: #2e9e5b; /* ESG / Sustainability */
+    --c1: #2f6fed; --c1-soft: #eaf1ff; /* Strategic */
+    --c2: #12938a; --c2-soft: #e5f6f4; /* Operational */
+    --c3: #7c4fe0; --c3-soft: #f1ecfd; /* Financial */
+    --c4: #d68a1a; --c4-soft: #fdf1df; /* Compliance */
+    --c5: #d1425a; --c5-soft: #fbe8ec; /* Technology / Cyber */
+    --c6: #2e9e5b; --c6-soft: #e7f7ee; /* ESG / Sustainability */
   }
 
   *{ box-sizing:border-box; }
@@ -99,39 +98,65 @@
     width:15px; height:15px; color:#9aa2b6; pointer-events:none;
   }
 
-  .groups{
-    display:grid; grid-template-columns: repeat(3, 1fr);
-    gap:16px; align-items:start;
+  .layout{
+    display:grid; grid-template-columns: 300px 1fr;
+    gap:20px; align-items:start;
   }
 
-  .group{
+  .domain-nav{
+    display:flex; flex-direction:column; gap:4px;
+    background: var(--card); border:1px solid var(--border); border-radius:16px;
+    padding:10px; box-shadow: var(--shadow);
+    position:sticky; top:24px;
+  }
+
+  .nav-item{
+    all:unset; box-sizing:border-box;
+    display:flex; align-items:center; gap:12px;
+    padding:11px 12px; border-radius:11px; cursor:pointer;
+    transition: background .15s ease, opacity .15s ease;
+  }
+  .nav-item:hover{ background:#f5f7fc; }
+  .nav-item.active{ background: var(--soft, #eaf1ff); }
+  .nav-item.dim{ opacity:.4; }
+
+  .nav-badge{
+    flex:0 0 auto; width:28px; height:28px; border-radius:9px;
+    display:flex; align-items:center; justify-content:center;
+    font-family:"Inter",sans-serif; font-weight:800; font-size:13px;
+    color:#fff; background: var(--accent, var(--c1));
+  }
+  .nav-text{ flex:1 1 auto; min-width:0; }
+  .nav-name{
+    display:block; font-family:"Inter",sans-serif; font-weight:700; font-size:13.5px;
+    color: var(--navy); letter-spacing:-.005em;
+  }
+  .nav-item.active .nav-name{ color: var(--accent, var(--c1)); }
+  .nav-count{ display:block; font-size:11.5px; color: var(--sub); margin-top:1px; }
+
+  .detail-panel{
     background: var(--card); border:1px solid var(--border); border-radius:16px;
     box-shadow: var(--shadow); overflow:hidden;
     border-left: 5px solid var(--accent, var(--c1));
+    min-height: 320px;
   }
 
-  .group-header{
-    display:flex; align-items:center; gap:14px;
-    padding:16px 20px; user-select:none;
-    background: var(--card);
-    border-bottom:1px solid var(--border-soft);
+  .panel-header{
+    display:flex; align-items:center; gap:16px;
+    padding:22px 24px; border-bottom:1px solid var(--border-soft);
   }
-
-  .g-badge{
-    flex:0 0 auto; width:34px; height:34px; border-radius:10px;
+  .panel-badge{
+    flex:0 0 auto; width:40px; height:40px; border-radius:12px;
     display:flex; align-items:center; justify-content:center;
-    font-family:"Inter",sans-serif; font-weight:800; font-size:15px;
+    font-family:"Inter",sans-serif; font-weight:800; font-size:17px;
     color:#fff; background: var(--accent, var(--c1));
   }
-  .g-titles{ flex:1 1 auto; min-width:0; }
-  .g-name{
-    font-family:"Inter",sans-serif; font-weight:700; font-size:16.5px;
+  .panel-name{
+    font-family:"Inter",sans-serif; font-weight:700; font-size:19px;
     color: var(--navy); letter-spacing:-.01em;
   }
-  .g-count{
-    font-size:12.5px; color: var(--sub); margin-top:2px;
-  }
-  .g-count b{ color: var(--accent, var(--c1)); font-weight:700; }
+  .panel-count{ font-size:13px; color: var(--sub); margin-top:3px; }
+  .panel-count b{ color: var(--accent, var(--c1)); font-weight:700; }
 
   .theme-list{ display:flex; flex-direction:column; }
 
@@ -140,7 +165,7 @@
 
   .theme-header{
     display:flex; align-items:center; gap:10px;
-    padding:14px 20px; cursor:pointer; user-select:none;
+    padding:15px 24px; cursor:pointer; user-select:none;
   }
   .theme-header:hover{ background:#fbfcfe; }
 
@@ -167,7 +192,7 @@
   .theme-body-inner{ overflow:hidden; }
 
   .theme-detail{
-    padding:2px 20px 16px 36px;
+    padding:2px 24px 18px 40px;
     display:flex; flex-direction:column; gap:12px;
   }
 
@@ -225,23 +250,26 @@
     display:none; text-align:center; padding:40px 20px; color: var(--sub); font-size:14px;
   }
 
-  @media (max-width: 1100px){
-    .groups{ grid-template-columns: repeat(2, 1fr); }
-  }
-
-  @media (max-width: 680px){
-    .groups{ grid-template-columns: 1fr; }
+  @media (max-width: 900px){
+    .layout{ grid-template-columns: 1fr; }
+    .domain-nav{
+      flex-direction:row; overflow-x:auto; position:static;
+      gap:8px; padding:8px;
+    }
+    .nav-item{ flex:0 0 auto; padding:9px 12px; }
+    .nav-count{ display:none; }
     .theme-header{ padding:14px 16px; }
-    .theme-detail{ padding:2px 16px 14px 32px; }
-    .group-header{ padding:14px 16px; }
+    .theme-detail{ padding:2px 16px 14px 34px; }
+    .panel-header{ padding:18px 16px; }
   }
 
   @media print{
     body{ background:#fff; padding:0; }
     .toolbar{ display:none; }
-    .groups{ grid-template-columns: 1fr; }
+    .domain-nav{ display:none; }
+    .layout{ grid-template-columns: 1fr; }
     .theme-body{ grid-template-rows: 1fr !important; }
-    .group{ box-shadow:none; break-inside:avoid; }
+    .detail-panel{ box-shadow:none; }
     .theme-chev{ display:none; }
   }
 </style>
@@ -272,7 +300,10 @@
     </div>
   </div>
 
-  <div class="groups" id="groups"></div>
+  <div class="layout">
+    <nav class="domain-nav" id="domainNav"></nav>
+    <section class="detail-panel" id="detailPanel"></section>
+  </div>
   <div class="no-results" id="noResults">ไม่พบรายการที่ตรงกับคำค้นหา</div>
 
   <div class="footnote">
@@ -284,7 +315,7 @@
 <script>
 const DATA = [
   {
-    num: 1, name: "Strategic Risk", accent: "var(--c1)",
+    num: 1, name: "Strategic Risk", accent: "var(--c1)", soft: "var(--c1-soft)",
     themes: [
       {
         title: "ผลการดำเนินงานของกลุ่มไม่เป็นไปตามเป้าหมาย",
@@ -304,7 +335,7 @@ const DATA = [
     ]
   },
   {
-    num: 2, name: "Operational Risk", accent: "var(--c2)",
+    num: 2, name: "Operational Risk", accent: "var(--c2)", soft: "var(--c2-soft)",
     themes: [
       {
         title: "ความต่อเนื่องและความสามารถในการดำเนินธุรกิจ",
@@ -314,7 +345,7 @@ const DATA = [
     ]
   },
   {
-    num: 3, name: "Financial Risk", accent: "var(--c3)",
+    num: 3, name: "Financial Risk", accent: "var(--c3)", soft: "var(--c3-soft)",
     themes: [
       {
         title: "ความมั่นคงทางการเงินและกระแสเงินสดของกลุ่ม",
@@ -324,7 +355,7 @@ const DATA = [
     ]
   },
   {
-    num: 4, name: "Compliance Risk", accent: "var(--c4)",
+    num: 4, name: "Compliance Risk", accent: "var(--c4)", soft: "var(--c4-soft)",
     themes: [
       {
         title: "Compliance &amp; Sustainability",
@@ -334,7 +365,7 @@ const DATA = [
     ]
   },
   {
-    num: 5, name: "Technology / Cyber Risk", accent: "var(--c5)",
+    num: 5, name: "Technology / Cyber Risk", accent: "var(--c5)", soft: "var(--c5-soft)",
     themes: [
       {
         title: "ความต่อเนื่องและความสามารถในการดำเนินธุรกิจ",
@@ -344,7 +375,7 @@ const DATA = [
     ]
   },
   {
-    num: 6, name: "ESG / Sustainability Risk", accent: "var(--c6)",
+    num: 6, name: "ESG / Sustainability Risk", accent: "var(--c6)", soft: "var(--c6-soft)",
     themes: [
       {
         title: "Compliance &amp; Sustainability",
@@ -355,7 +386,21 @@ const DATA = [
   }
 ];
 
-const groupsEl = document.getElementById('groups');
+const domainNavEl = document.getElementById('domainNav');
+const detailPanelEl = document.getElementById('detailPanel');
+const searchInput = document.getElementById('searchInput');
+const noResults = document.getElementById('noResults');
+
+let activeIndex = 0;
+
+function themeSearchStr(theme){
+  return (theme.title+' '+theme.focus+' '+theme.kris.join(' ')).toLowerCase();
+}
+
+function domainMatchCount(domain, q){
+  if(!q) return domain.themes.length;
+  return domain.themes.filter(t => themeSearchStr(t).includes(q)).length;
+}
 
 function renderKris(kris){
   return kris.map(k => `<li>${k}</li>`).join('');
@@ -363,7 +408,7 @@ function renderKris(kris){
 
 function renderThemeItem(theme){
   return `
-    <div class="theme-item" data-theme data-search="${(theme.title+' '+theme.focus+' '+theme.kris.join(' ')).toLowerCase()}">
+    <div class="theme-item" data-theme data-search="${themeSearchStr(theme)}">
       <div class="theme-header" data-theme-toggle>
         <span class="theme-dot"></span>
         <div class="theme-title">${theme.title}</div>
@@ -390,62 +435,99 @@ function renderThemeItem(theme){
     </div>`;
 }
 
-function renderGroup(g){
-  return `
-    <div class="group" style="--accent:${g.accent}" data-group>
-      <div class="group-header">
-        <div class="g-badge">${g.num}</div>
-        <div class="g-titles">
-          <div class="g-name">${g.num}. ${g.name}</div>
-          <div class="g-count"><b>${g.themes.length}</b> Risk Theme${g.themes.length > 1 ? 's' : ''}</div>
-        </div>
+function renderNav(q){
+  domainNavEl.innerHTML = DATA.map((g, i) => {
+    const count = domainMatchCount(g, q);
+    const dim = q && count === 0;
+    return `
+      <button class="nav-item ${i===activeIndex?'active':''} ${dim?'dim':''}" data-domain="${i}" style="--accent:${g.accent};--soft:${g.soft}">
+        <span class="nav-badge">${g.num}</span>
+        <span class="nav-text">
+          <span class="nav-name">${g.num}. ${g.name}</span>
+          <span class="nav-count">${g.themes.length} Risk Theme${g.themes.length > 1 ? 's' : ''}</span>
+        </span>
+      </button>`;
+  }).join('');
+}
+
+function renderPanel(index){
+  const g = DATA[index];
+  detailPanelEl.style.setProperty('--accent', g.accent);
+  detailPanelEl.innerHTML = `
+    <div class="panel-header">
+      <span class="panel-badge">${g.num}</span>
+      <div>
+        <div class="panel-name">${g.num}. ${g.name}</div>
+        <div class="panel-count"><b>${g.themes.length}</b> Risk Theme${g.themes.length > 1 ? 's' : ''}</div>
       </div>
-      <div class="theme-list">
-        ${g.themes.map(renderThemeItem).join('')}
-      </div>
+    </div>
+    <div class="theme-list">
+      ${g.themes.map(renderThemeItem).join('')}
     </div>`;
 }
 
-groupsEl.innerHTML = DATA.map(renderGroup).join('');
+function applyFilter(q){
+  const items = detailPanelEl.querySelectorAll('[data-theme]');
+  let anyMatch = false;
+  items.forEach(item => {
+    const match = !q || item.dataset.search.includes(q);
+    item.style.display = match ? '' : 'none';
+    if(match){ anyMatch = true; }
+    if(q && match) item.classList.add('open');
+    if(!q) item.classList.remove('open');
+  });
+  return anyMatch;
+}
 
-groupsEl.addEventListener('click', (e) => {
+function selectDomain(index){
+  activeIndex = index;
+  const q = searchInput.value.trim().toLowerCase();
+  renderNav(q);
+  renderPanel(index);
+  const anyMatch = applyFilter(q);
+  noResults.style.display = (q && !anyMatch) ? 'block' : 'none';
+}
+
+domainNavEl.addEventListener('click', (e) => {
+  const btn = e.target.closest('[data-domain]');
+  if(!btn) return;
+  selectDomain(Number(btn.dataset.domain));
+});
+
+detailPanelEl.addEventListener('click', (e) => {
   const header = e.target.closest('[data-theme-toggle]');
   if(!header) return;
   header.closest('[data-theme]').classList.toggle('open');
 });
 
 document.getElementById('expandAllBtn').addEventListener('click', () => {
-  document.querySelectorAll('[data-theme]').forEach(t => t.classList.add('open'));
+  detailPanelEl.querySelectorAll('[data-theme]').forEach(t => t.classList.add('open'));
 });
 document.getElementById('collapseAllBtn').addEventListener('click', () => {
-  document.querySelectorAll('[data-theme]').forEach(t => t.classList.remove('open'));
+  detailPanelEl.querySelectorAll('[data-theme]').forEach(t => t.classList.remove('open'));
 });
-
-const searchInput = document.getElementById('searchInput');
-const noResults = document.getElementById('noResults');
 
 searchInput.addEventListener('input', () => {
   const q = searchInput.value.trim().toLowerCase();
-  let anyVisibleTotal = false;
 
-  document.querySelectorAll('[data-group]').forEach(group => {
-    const items = group.querySelectorAll('[data-theme]');
-    let groupHasMatch = false;
+  if(q){
+    const counts = DATA.map(g => domainMatchCount(g, q));
+    if(counts[activeIndex] === 0){
+      const firstIdx = counts.findIndex(c => c > 0);
+      if(firstIdx !== -1){
+        activeIndex = firstIdx;
+        renderPanel(activeIndex);
+      }
+    }
+  }
 
-    items.forEach(item => {
-      const match = !q || item.dataset.search.includes(q);
-      item.style.display = match ? '' : 'none';
-      if(match) groupHasMatch = true;
-      if(q && match) item.classList.add('open');
-      if(!q) item.classList.remove('open');
-    });
-
-    group.style.display = groupHasMatch ? '' : 'none';
-    if(groupHasMatch) anyVisibleTotal = true;
-  });
-
-  noResults.style.display = anyVisibleTotal ? 'none' : 'block';
+  renderNav(q);
+  const anyMatch = applyFilter(q);
+  noResults.style.display = (q && !anyMatch) ? 'block' : 'none';
 });
+
+renderNav('');
+renderPanel(activeIndex);
 </script>
 </body>
 </html>

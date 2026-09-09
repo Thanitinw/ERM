@@ -39,7 +39,7 @@
     padding: 40px 24px 80px;
   }
 
-  .page{ max-width: 1180px; margin: 0 auto; }
+  .page{ max-width: 1320px; margin: 0 auto; }
 
   .masthead{ margin-bottom: 24px; }
   .eyebrow{
@@ -99,7 +99,10 @@
     width:15px; height:15px; color:#9aa2b6; pointer-events:none;
   }
 
-  .groups{ display:flex; flex-direction:column; gap:14px; }
+  .groups{
+    display:grid; grid-template-columns: repeat(3, 1fr);
+    gap:16px; align-items:start;
+  }
 
   .group{
     background: var(--card); border:1px solid var(--border); border-radius:16px;
@@ -148,24 +151,20 @@
     border-top:1px solid var(--border-soft);
   }
   .theme-row{
-    display:grid;
-    grid-template-columns: 1.15fr 1.5fr 1.5fr;
-    gap:0;
-    padding:16px 20px 16px 20px;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    padding:16px 20px;
     border-top:1px solid var(--border-soft);
   }
   .theme-row:first-child{ border-top:none; }
   .theme-row:hover{ background:#fbfcfe; }
 
   .col-label{
-    display:none;
     font-family:"Inter",sans-serif; font-size:10.5px; font-weight:700;
     letter-spacing:.06em; text-transform:uppercase; color:#9aa2b6;
     margin-bottom:4px;
   }
-
-  .col{ padding-right:22px; }
-  .col:last-child{ padding-right:0; }
 
   .theme-title{
     font-weight:600; color: var(--navy); font-size:14.5px; line-height:1.45;
@@ -184,17 +183,6 @@
     background: var(--accent, var(--c1)); margin-top:6px;
   }
 
-  .head-row{
-    display:grid; grid-template-columns: 1.15fr 1.5fr 1.5fr;
-    padding:0 20px; margin-top:2px;
-  }
-  .head-row div{
-    font-family:"Inter",sans-serif; font-size:11px; font-weight:700;
-    letter-spacing:.06em; text-transform:uppercase; color:#9aa2b6;
-    padding:12px 22px 12px 0;
-  }
-  .head-row-wrap{ border-top:1px solid var(--border-soft); background:#fafbfd; }
-
   .footnote{
     margin-top:22px; padding:14px 18px; background:#fff9ec;
     border:1px solid #f3e3b8; border-radius:12px;
@@ -206,17 +194,20 @@
     display:none; text-align:center; padding:40px 20px; color: var(--sub); font-size:14px;
   }
 
-  @media (max-width: 860px){
-    .head-row-wrap{ display:none; }
-    .theme-row{ grid-template-columns:1fr; gap:12px; padding:16px 18px; }
-    .col{ padding-right:0; }
-    .col-label{ display:block; }
+  @media (max-width: 1100px){
+    .groups{ grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 680px){
+    .groups{ grid-template-columns: 1fr; }
+    .theme-row{ padding:14px 16px; }
     .group-header{ padding:14px 16px; }
   }
 
   @media print{
     body{ background:#fff; padding:0; }
     .toolbar{ display:none; }
+    .groups{ grid-template-columns: 1fr; }
     .group-body{ grid-template-rows: 1fr !important; }
     .group{ box-shadow:none; break-inside:avoid; }
     .chev{ display:none; }
@@ -369,13 +360,6 @@ function renderGroup(g){
       </div>
       <div class="group-body">
         <div class="group-body-inner">
-          <div class="head-row-wrap">
-            <div class="head-row">
-              <div>Corporate Risk Theme</div>
-              <div>ประเด็นที่ Corporate ควรติดตาม</div>
-              <div>ตัวอย่าง Corporate KRI</div>
-            </div>
-          </div>
           <div class="theme-table">
             ${g.themes.map(renderThemeRow).join('')}
           </div>

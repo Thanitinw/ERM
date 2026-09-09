@@ -183,6 +183,9 @@
   .theme-focus{
     color: var(--sub); font-size:13px; line-height:1.5;
   }
+  .theme-focus b{
+    color: var(--navy); font-weight:600;
+  }
   .theme-chev{
     flex:0 0 auto; width:16px; height:16px; color:#9aa2b6; margin-top:3px;
     transition: transform .22s ease;
@@ -415,7 +418,7 @@ function renderThemeItem(theme){
         <span class="theme-dot"></span>
         <div class="theme-text">
           <div class="theme-title">${theme.title}</div>
-          <div class="theme-focus">${theme.focus}</div>
+          <div class="theme-focus"><b>ติดตาม:</b> ${theme.focus}</div>
         </div>
         <svg class="theme-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m6 9 6 6 6-6"/></svg>
       </div>

@@ -171,10 +171,33 @@
     display:flex; flex-direction:column; gap:12px;
   }
 
-  .col-label{
-    font-family:"Inter",sans-serif; font-size:10.5px; font-weight:700;
-    letter-spacing:.06em; text-transform:uppercase; color:#9aa2b6;
-    margin-bottom:4px;
+  .detail-block{ display:flex; gap:8px; align-items:flex-start; }
+
+  .info-icon{
+    position:relative; flex:0 0 auto; margin-top:2px;
+    width:16px; height:16px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    background:#eef2fb; color:#8a93a8; cursor:help;
+  }
+  .info-icon svg{ width:11px; height:11px; }
+  .info-icon:hover,
+  .info-icon:focus-visible{ background: var(--accent, var(--c1)); color:#fff; outline:none; }
+
+  .info-icon::after{
+    content: attr(data-tooltip);
+    position:absolute; left:0; bottom:calc(100% + 8px);
+    background: var(--navy); color:#fff;
+    font-family:"Sarabun",sans-serif; font-size:12px; font-weight:500; line-height:1.4;
+    padding:6px 10px; border-radius:8px;
+    width:max-content; max-width:220px;
+    box-shadow: 0 6px 16px rgba(20,33,61,.28);
+    opacity:0; visibility:hidden; transform:translateY(4px);
+    transition: opacity .15s ease, transform .15s ease;
+    z-index:20; pointer-events:none;
+  }
+  .info-icon:hover::after,
+  .info-icon:focus-visible::after{
+    opacity:1; visibility:visible; transform:translateY(0);
   }
 
   .theme-focus{
@@ -315,7 +338,7 @@ const DATA = [
     themes: [
       {
         title: "ความต่อเนื่องและความสามารถในการดำเนินธุรกิจ",
-        focus: "ความพร้อมและเสถียรภาพของระบบ IT / OT / Cyber ที่สำคัญต่อการดำเนินธุรกิจ",
+        focus: "ความพร้อมและเสถียรภาพของระบบ IT / OT / Cyber ที่สำคัญ",
         kris: ["Critical System Downtime", "Critical System Availability %", "จำนวน Critical Cyber Incidents"]
       }
     ]
@@ -349,12 +372,16 @@ function renderThemeItem(theme){
       <div class="theme-body">
         <div class="theme-body-inner">
           <div class="theme-detail">
-            <div>
-              <div class="col-label">ประเด็นที่ Corporate ควรติดตาม</div>
+            <div class="detail-block">
+              <span class="info-icon" tabindex="0" data-tooltip="ประเด็นที่ Corporate ควรติดตาม">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="11"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+              </span>
               <div class="theme-focus">${theme.focus}</div>
             </div>
-            <div>
-              <div class="col-label">ตัวอย่าง Corporate KRI</div>
+            <div class="detail-block">
+              <span class="info-icon" tabindex="0" data-tooltip="ตัวอย่าง Corporate KRI">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="11"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+              </span>
               <ul class="kri-list">${renderKris(theme.kris)}</ul>
             </div>
           </div>

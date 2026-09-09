@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Corporate Risk Themes and Key Risk Indicators (KRI)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&family=Inter:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy: #14213d;
+    --navy-2: #1c2d52;
+    --ink: #1b2333;
+    --sub: #5b6479;
+    --bg: #eef1f7;
+    --card: #ffffff;
+    --border: #e1e5ef;
+    --border-soft: #edf0f6;
+    --chip-bg: #eef2fb;
+    --chip-ink: #2b3a63;
+    --shadow: 0 1px 2px rgba(20,33,61,.06), 0 8px 24px -12px rgba(20,33,61,.18);
+
+    --c1: #2f6fed; /* Strategic */
+    --c2: #12938a; /* Operational */
+    --c3: #7c4fe0; /* Financial */
+    --c4: #d68a1a; /* Compliance */
+    --c5: #d1425a; /* Technology / Cyber */
+    --c6: #2e9e5b; /* ESG / Sustainability */
+  }
+
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Sarabun","Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,"Leelawadee UI",sans-serif;
+    line-height:1.5;
+    padding: 40px 24px 80px;
+  }
+
+  .page{ max-width: 1180px; margin: 0 auto; }
+
+  .masthead{ margin-bottom: 24px; }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:"Inter",sans-serif; font-size:12px; font-weight:700;
+    letter-spacing:.09em; text-transform:uppercase; color: var(--c1);
+    background: #eaf1ff; border:1px solid #d7e4ff; padding:5px 12px; border-radius:999px;
+    margin-bottom:14px;
+  }
+  h1{
+    font-family:"Inter",sans-serif;
+    font-size: clamp(24px, 3vw, 32px);
+    font-weight:800; letter-spacing:-.01em;
+    color: var(--navy); margin:0 0 8px;
+  }
+  .subtitle{ color: var(--sub); font-size:16px; margin:0; }
+
+  .stats{
+    display:flex; flex-wrap:wrap; gap:12px;
+    margin: 22px 0 26px;
+  }
+  .stat{
+    background: var(--card); border:1px solid var(--border); border-radius:12px;
+    padding:12px 18px; box-shadow: var(--shadow);
+    display:flex; align-items:baseline; gap:8px;
+  }
+  .stat b{ font-family:"Inter",sans-serif; font-size:20px; color: var(--navy); }
+  .stat span{ color: var(--sub); font-size:13px; }
+
+  .toolbar{
+    display:flex; align-items:center; justify-content:space-between; gap:16px;
+    flex-wrap:wrap; margin-bottom:16px;
+  }
+  .toolbar-btns{ display:flex; gap:8px; }
+  .btn{
+    font-family:"Sarabun",sans-serif; font-size:13.5px; font-weight:600;
+    color: var(--navy); background: var(--card); border:1px solid var(--border);
+    padding:9px 16px; border-radius:9px; cursor:pointer;
+    transition: background .15s ease, border-color .15s ease, transform .05s ease;
+  }
+  .btn:hover{ background:#f5f7fc; border-color:#cfd7e8; }
+  .btn:active{ transform: translateY(1px); }
+  .btn.primary{ background: var(--navy); color:#fff; border-color: var(--navy); }
+  .btn.primary:hover{ background: var(--navy-2); }
+
+  .search{
+    position:relative; flex: 1 1 260px; max-width:320px;
+  }
+  .search input{
+    width:100%; font-family:"Sarabun",sans-serif; font-size:14px;
+    padding:9px 14px 9px 36px; border-radius:9px; border:1px solid var(--border);
+    background: var(--card); color:var(--ink); outline:none;
+  }
+  .search input:focus{ border-color: var(--c1); box-shadow:0 0 0 3px #2f6fed22; }
+  .search svg{
+    position:absolute; left:12px; top:50%; transform:translateY(-50%);
+    width:15px; height:15px; color:#9aa2b6; pointer-events:none;
+  }
+
+  .groups{ display:flex; flex-direction:column; gap:14px; }
+
+  .group{
+    background: var(--card); border:1px solid var(--border); border-radius:16px;
+    box-shadow: var(--shadow); overflow:hidden;
+    border-left: 5px solid var(--accent, var(--c1));
+  }
+
+  .group-header{
+    display:flex; align-items:center; gap:14px;
+    padding:16px 20px; cursor:pointer; user-select:none;
+    background: var(--card);
+  }
+  .group-header:hover{ background:#fafbfd; }
+
+  .g-badge{
+    flex:0 0 auto; width:34px; height:34px; border-radius:10px;
+    display:flex; align-items:center; justify-content:center;
+    font-family:"Inter",sans-serif; font-weight:800; font-size:15px;
+    color:#fff; background: var(--accent, var(--c1));
+  }
+  .g-titles{ flex:1 1 auto; min-width:0; }
+  .g-name{
+    font-family:"Inter",sans-serif; font-weight:700; font-size:16.5px;
+    color: var(--navy); letter-spacing:-.01em;
+  }
+  .g-count{
+    font-size:12.5px; color: var(--sub); margin-top:2px;
+  }
+  .g-count b{ color: var(--accent, var(--c1)); font-weight:700; }
+
+  .chev{
+    flex:0 0 auto; width:20px; height:20px; color:#8a93a8;
+    transition: transform .25s ease;
+  }
+  .group.open .chev{ transform: rotate(180deg); }
+
+  .group-body{
+    display:grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows .28s ease;
+  }
+  .group.open .group-body{ grid-template-rows: 1fr; }
+  .group-body-inner{ overflow:hidden; }
+
+  .theme-table{
+    border-top:1px solid var(--border-soft);
+  }
+  .theme-row{
+    display:grid;
+    grid-template-columns: 1.15fr 1.5fr 1.5fr;
+    gap:0;
+    padding:16px 20px 16px 20px;
+    border-top:1px solid var(--border-soft);
+  }
+  .theme-row:first-child{ border-top:none; }
+  .theme-row:hover{ background:#fbfcfe; }
+
+  .col-label{
+    display:none;
+    font-family:"Inter",sans-serif; font-size:10.5px; font-weight:700;
+    letter-spacing:.06em; text-transform:uppercase; color:#9aa2b6;
+    margin-bottom:4px;
+  }
+
+  .col{ padding-right:22px; }
+  .col:last-child{ padding-right:0; }
+
+  .theme-title{
+    font-weight:600; color: var(--navy); font-size:14.5px; line-height:1.45;
+  }
+  .theme-focus{
+    color:#3c4359; font-size:14px; line-height:1.55;
+  }
+
+  .kri-list{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:6px; }
+  .kri-list li{
+    display:flex; align-items:flex-start; gap:8px;
+    font-size:13.5px; color: var(--chip-ink); line-height:1.4;
+  }
+  .kri-list li::before{
+    content:""; flex:0 0 auto; width:6px; height:6px; border-radius:50%;
+    background: var(--accent, var(--c1)); margin-top:6px;
+  }
+
+  .head-row{
+    display:grid; grid-template-columns: 1.15fr 1.5fr 1.5fr;
+    padding:0 20px; margin-top:2px;
+  }
+  .head-row div{
+    font-family:"Inter",sans-serif; font-size:11px; font-weight:700;
+    letter-spacing:.06em; text-transform:uppercase; color:#9aa2b6;
+    padding:12px 22px 12px 0;
+  }
+  .head-row-wrap{ border-top:1px solid var(--border-soft); background:#fafbfd; }
+
+  .footnote{
+    margin-top:22px; padding:14px 18px; background:#fff9ec;
+    border:1px solid #f3e3b8; border-radius:12px;
+    font-size:13.5px; color:#7a5e17; line-height:1.6;
+  }
+  .footnote b{ color:#5b4610; }
+
+  .no-results{
+    display:none; text-align:center; padding:40px 20px; color: var(--sub); font-size:14px;
+  }
+
+  @media (max-width: 860px){
+    .head-row-wrap{ display:none; }
+    .theme-row{ grid-template-columns:1fr; gap:12px; padding:16px 18px; }
+    .col{ padding-right:0; }
+    .col-label{ display:block; }
+    .group-header{ padding:14px 16px; }
+  }
+
+  @media print{
+    body{ background:#fff; padding:0; }
+    .toolbar{ display:none; }
+    .group-body{ grid-template-rows: 1fr !important; }
+    .group{ box-shadow:none; break-inside:avoid; }
+    .chev{ display:none; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="masthead">
+    <span class="eyebrow">Risk Management Portal</span>
+    <h1>Corporate Risk Themes and Key Risk Indicators (KRI)</h1>
+    <p class="subtitle">กรอบติดตามความเสี่ยงระดับ Corporate ภายใต้ 6 Risk Domains</p>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><b>6</b><span>Risk Domains</span></div>
+    <div class="stat"><b>8</b><span>Corporate Risk Themes</span></div>
+    <div class="stat"><b>17</b><span>ตัวอย่าง Corporate KRI</span></div>
+  </div>
+
+  <div class="toolbar">
+    <div class="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <input id="searchInput" type="text" placeholder="ค้นหา Risk Theme, ประเด็น หรือ KRI...">
+    </div>
+    <div class="toolbar-btns">
+      <button class="btn" id="collapseAllBtn">Collapse All</button>
+      <button class="btn primary" id="expandAllBtn">Expand All</button>
+    </div>
+  </div>
+
+  <div class="groups" id="groups"></div>
+  <div class="no-results" id="noResults">ไม่พบรายการที่ตรงกับคำค้นหา</div>
+
+  <div class="footnote">
+    <b>หมายเหตุ:</b> Corporate Risk Theme สามารถครอบคลุมมากกว่า 1 Risk Domain ได้ โดย 6 Risk Domains ยังคงเป็นกรอบการจำแนกความเสี่ยงหลักของกลุ่มบริษัท
+  </div>
+
+</div>
+
+<script>
+const DATA = [
+  {
+    num: 1, name: "Strategic Risk", accent: "var(--c1)",
+    themes: [
+      {
+        title: "ผลการดำเนินงานของกลุ่มไม่เป็นไปตามเป้าหมาย",
+        focus: "การเติบโตและผลประกอบการของกลุ่มเทียบกับเป้าหมาย",
+        kris: ["Revenue Achievement %", "EBITDA Achievement %"]
+      },
+      {
+        title: "การดำเนินยุทธศาสตร์และการลงทุนไม่เป็นไปตามแผน",
+        focus: "ความคืบหน้าของ Strategic Initiatives, New Business และการลงทุนสำคัญ",
+        kris: ["% Strategic Projects ที่ล่าช้ากว่าแผน", "% Investment ที่ผลตอบแทนต่ำกว่า Business Case"]
+      },
+      {
+        title: "การกระจุกตัวและการพึ่งพาทางธุรกิจ",
+        focus: "การพึ่งพาลูกค้า ธุรกิจ ตลาด หรือแหล่งรายได้สำคัญ",
+        kris: ["% Revenue จาก Top 5 Customers", "% Revenue จากธุรกิจหลัก"]
+      }
+    ]
+  },
+  {
+    num: 2, name: "Operational Risk", accent: "var(--c2)",
+    themes: [
+      {
+        title: "ความต่อเนื่องและความสามารถในการดำเนินธุรกิจ",
+        focus: "ความพร้อมของการผลิต โครงการ Supply Chain วัตถุดิบ และทรัพยากรสำคัญของบริษัทย่อย",
+        kris: ["% Critical Operations ที่มีสถานะเกินเกณฑ์", "% Critical Materials ต่ำกว่า Safety Level"]
+      }
+    ]
+  },
+  {
+    num: 3, name: "Financial Risk", accent: "var(--c3)",
+    themes: [
+      {
+        title: "ความมั่นคงทางการเงินและกระแสเงินสดของกลุ่ม",
+        focus: "สภาพคล่อง กระแสเงินสด การเรียกเก็บเงิน และคุณภาพลูกหนี้",
+        kris: ["Operating Cash Flow vs Plan", "Liquidity Headroom", "% AR Overdue >90 วัน"]
+      }
+    ]
+  },
+  {
+    num: 4, name: "Compliance Risk", accent: "var(--c4)",
+    themes: [
+      {
+        title: "Compliance &amp; Sustainability",
+        focus: "การปฏิบัติตามกฎหมาย ใบอนุญาต และเงื่อนไขสำคัญของธุรกิจ",
+        kris: ["จำนวน Material Compliance Incidents", "จำนวน Critical Licenses at Risk"]
+      }
+    ]
+  },
+  {
+    num: 5, name: "Technology / Cyber Risk", accent: "var(--c5)",
+    themes: [
+      {
+        title: "ความต่อเนื่องและความสามารถในการดำเนินธุรกิจ",
+        focus: "ความพร้อมและเสถียรภาพของระบบ IT / OT / Cyber ที่สำคัญต่อการดำเนินธุรกิจ",
+        kris: ["Critical System Downtime", "Critical System Availability %", "จำนวน Critical Cyber Incidents"]
+      }
+    ]
+  },
+  {
+    num: 6, name: "ESG / Sustainability Risk", accent: "var(--c6)",
+    themes: [
+      {
+        title: "Compliance &amp; Sustainability",
+        focus: "ผลการดำเนินงานด้าน ESG และ Sustainability ที่มีนัยสำคัญต่อกลุ่ม",
+        kris: ["% Material ESG Targets Achievement", "จำนวน Significant ESG Incidents"]
+      }
+    ]
+  }
+];
+
+const groupsEl = document.getElementById('groups');
+
+function renderKris(kris){
+  return kris.map(k => `<li>${k}</li>`).join('');
+}
+
+function renderThemeRow(theme){
+  return `
+    <div class="theme-row" data-search="${(theme.title+' '+theme.focus+' '+theme.kris.join(' ')).toLowerCase()}">
+      <div class="col">
+        <div class="col-label">Corporate Risk Theme</div>
+        <div class="theme-title">${theme.title}</div>
+      </div>
+      <div class="col">
+        <div class="col-label">ประเด็นที่ Corporate ควรติดตาม</div>
+        <div class="theme-focus">${theme.focus}</div>
+      </div>
+      <div class="col">
+        <div class="col-label">ตัวอย่าง Corporate KRI</div>
+        <ul class="kri-list">${renderKris(theme.kris)}</ul>
+      </div>
+    </div>`;
+}
+
+function renderGroup(g){
+  return `
+    <div class="group open" style="--accent:${g.accent}" data-group>
+      <div class="group-header" data-toggle>
+        <div class="g-badge">${g.num}</div>
+        <div class="g-titles">
+          <div class="g-name">${g.num}. ${g.name}</div>
+          <div class="g-count"><b>${g.themes.length}</b> Risk Theme${g.themes.length > 1 ? 's' : ''}</div>
+        </div>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m6 9 6 6 6-6"/></svg>
+      </div>
+      <div class="group-body">
+        <div class="group-body-inner">
+          <div class="head-row-wrap">
+            <div class="head-row">
+              <div>Corporate Risk Theme</div>
+              <div>ประเด็นที่ Corporate ควรติดตาม</div>
+              <div>ตัวอย่าง Corporate KRI</div>
+            </div>
+          </div>
+          <div class="theme-table">
+            ${g.themes.map(renderThemeRow).join('')}
+          </div>
+        </div>
+      </div>
+    </div>`;
+}
+
+groupsEl.innerHTML = DATA.map(renderGroup).join('');
+
+groupsEl.addEventListener('click', (e) => {
+  const header = e.target.closest('[data-toggle]');
+  if(!header) return;
+  header.closest('[data-group]').classList.toggle('open');
+});
+
+document.getElementById('expandAllBtn').addEventListener('click', () => {
+  document.querySelectorAll('[data-group]').forEach(g => g.classList.add('open'));
+});
+document.getElementById('collapseAllBtn').addEventListener('click', () => {
+  document.querySelectorAll('[data-group]').forEach(g => g.classList.remove('open'));
+});
+
+const searchInput = document.getElementById('searchInput');
+const noResults = document.getElementById('noResults');
+
+searchInput.addEventListener('input', () => {
+  const q = searchInput.value.trim().toLowerCase();
+  let anyVisibleTotal = false;
+
+  document.querySelectorAll('[data-group]').forEach(group => {
+    const rows = group.querySelectorAll('.theme-row');
+    let groupHasMatch = false;
+
+    rows.forEach(row => {
+      const match = !q || row.dataset.search.includes(q);
+      row.style.display = match ? '' : 'none';
+      if(match) groupHasMatch = true;
+    });
+
+    group.style.display = groupHasMatch ? '' : 'none';
+    if(q && groupHasMatch) group.classList.add('open');
+    if(groupHasMatch) anyVisibleTotal = true;
+  });
+
+  noResults.style.display = anyVisibleTotal ? 'none' : 'block';
+});
+</script>
+</body>
+</html>

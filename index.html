@@ -164,21 +164,27 @@
   .theme-item:first-child{ border-top:none; }
 
   .theme-header{
-    display:flex; align-items:center; gap:10px;
+    display:flex; align-items:flex-start; gap:10px;
     padding:15px 24px; cursor:pointer; user-select:none;
   }
   .theme-header:hover{ background:#fbfcfe; }
 
   .theme-dot{
     flex:0 0 auto; width:7px; height:7px; border-radius:50%;
-    background: var(--accent, var(--c1));
+    background: var(--accent, var(--c1)); margin-top:7px;
+  }
+  .theme-text{
+    flex:1 1 auto; min-width:0;
+    display:flex; flex-direction:column; gap:4px;
   }
   .theme-title{
-    flex:1 1 auto; min-width:0;
     font-weight:600; color: var(--navy); font-size:14.5px; line-height:1.45;
   }
+  .theme-focus{
+    color: var(--sub); font-size:13px; line-height:1.5;
+  }
   .theme-chev{
-    flex:0 0 auto; width:16px; height:16px; color:#9aa2b6;
+    flex:0 0 auto; width:16px; height:16px; color:#9aa2b6; margin-top:3px;
     transition: transform .22s ease;
   }
   .theme-item.open .theme-chev{ transform: rotate(180deg); }
@@ -223,10 +229,6 @@
   .info-icon:hover::after,
   .info-icon:focus-visible::after{
     opacity:1; visibility:visible; transform:translateY(0);
-  }
-
-  .theme-focus{
-    color:#3c4359; font-size:14px; line-height:1.55;
   }
 
   .kri-list{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:6px; }
@@ -286,7 +288,7 @@
   <div class="stats">
     <div class="stat"><b>6</b><span>Risk Domains</span></div>
     <div class="stat"><b>8</b><span>Corporate Risk Themes</span></div>
-    <div class="stat"><b>17</b><span>Corporate KRI</span></div>
+    <div class="stat"><b>18</b><span>Corporate KRI</span></div>
   </div>
 
   <div class="toolbar">
@@ -319,18 +321,18 @@ const DATA = [
     themes: [
       {
         title: "ผลการดำเนินงานของกลุ่มไม่เป็นไปตามเป้าหมาย",
-        focus: "การเติบโตและผลประกอบการของกลุ่มเทียบกับเป้าหมาย",
+        focus: "ผลประกอบการรวม และ Contribution ของแต่ละกลุ่มธุรกิจเทียบกับแผน",
         kris: ["Revenue Achievement %", "EBITDA Achievement %"]
       },
       {
-        title: "การดำเนินยุทธศาสตร์และการลงทุนไม่เป็นไปตามแผน",
-        focus: "ความคืบหน้าของ Strategic Initiatives, New Business และการลงทุนสำคัญ",
-        kris: ["% Strategic Projects ที่ล่าช้ากว่าแผน", "% Investment ที่ผลตอบแทนต่ำกว่า Business Case"]
+        title: "การดำเนินกลยุทธ์และการลงทุนไม่เป็นไปตามแผน",
+        focus: "Strategic Initiatives, New Business, Capacity Expansion และการลงทุนสำคัญของกลุ่ม ว่าดำเนินการและสร้างผลตอบแทนตาม Business Case หรือไม่",
+        kris: ["% Strategic Initiatives ที่ล่าช้าเกินเกณฑ์", "% Investment ที่ Forecast Return ต่ำกว่า Business Case"]
       },
       {
         title: "การกระจุกตัวและการพึ่งพาทางธุรกิจ",
-        focus: "การพึ่งพาลูกค้า ธุรกิจ ตลาด หรือแหล่งรายได้สำคัญ",
-        kris: ["% Revenue จาก Top 5 Customers", "% Revenue จากธุรกิจหลัก"]
+        focus: "การพึ่งพาลูกค้ารายใหญ่ กลุ่มธุรกิจ หรือแหล่งรายได้ใดมากเกินไป",
+        kris: ["% Revenue จาก Top 5 Customers", "% Revenue / EBITDA จากกลุ่มธุรกิจที่มีสัดส่วนสูงสุด"]
       }
     ]
   },
@@ -339,8 +341,8 @@ const DATA = [
     themes: [
       {
         title: "ความต่อเนื่องและความสามารถในการดำเนินธุรกิจ",
-        focus: "ความพร้อมของการผลิต โครงการ Supply Chain วัตถุดิบ และทรัพยากรสำคัญของบริษัทย่อย",
-        kris: ["% Critical Operations ที่มีสถานะเกินเกณฑ์", "% Critical Materials ต่ำกว่า Safety Level"]
+        focus: "ความสามารถของธุรกิจสำคัญในการผลิต ส่งมอบโครงการ ผลิตไฟฟ้า จัดหาวัตถุดิบ และให้บริการได้ต่อเนื่อง",
+        kris: ["% Group Revenue / EBITDA ที่อยู่ภายใต้ Critical Operational Risk ระดับ Red", "% Major Backlog / Revenue at Risk จากปัญหาการดำเนินงาน"]
       }
     ]
   },
@@ -349,8 +351,8 @@ const DATA = [
     themes: [
       {
         title: "ความมั่นคงทางการเงินและกระแสเงินสดของกลุ่ม",
-        focus: "สภาพคล่อง กระแสเงินสด การเรียกเก็บเงิน และคุณภาพลูกหนี้",
-        kris: ["Operating Cash Flow vs Plan", "Liquidity Headroom", "% AR Overdue >90 วัน"]
+        focus: "Cash Flow, Liquidity และความสามารถในการเรียกเก็บเงินของบริษัทย่อย รวมถึงเงินสดที่บริษัทแม่สามารถนำมาใช้ได้",
+        kris: ["Operating Cash Flow vs Plan", "% AR Overdue > 90 วัน", "Liquidity Headroom"]
       }
     ]
   },
@@ -359,8 +361,8 @@ const DATA = [
     themes: [
       {
         title: "Compliance &amp; Sustainability",
-        focus: "การปฏิบัติตามกฎหมาย ใบอนุญาต และเงื่อนไขสำคัญของธุรกิจ",
-        kris: ["จำนวน Material Compliance Incidents", "จำนวน Critical Licenses at Risk"]
+        focus: "กฎหมาย ใบอนุญาต สัมปทาน เงื่อนไขสัญญา หรือข้อกำหนดสำคัญที่หากไม่ปฏิบัติตามอาจกระทบการดำเนินธุรกิจ",
+        kris: ["จำนวน Material Compliance Incidents", "จำนวน Critical Licenses / Permits / Contractual Conditions at Risk"]
       }
     ]
   },
@@ -369,8 +371,8 @@ const DATA = [
     themes: [
       {
         title: "ความต่อเนื่องและความสามารถในการดำเนินธุรกิจ",
-        focus: "ความพร้อมและเสถียรภาพของระบบ IT / OT / Cyber ที่สำคัญ",
-        kris: ["Critical System Downtime", "Critical System Availability %", "จำนวน Critical Cyber Incidents"]
+        focus: "ความพร้อมของระบบ IT / OT / ERP / SCADA และระบบ Digital ที่สำคัญต่อการดำเนินงานของกลุ่ม",
+        kris: ["Critical System Downtime", "Critical System Availability %", "จำนวน High / Critical Cyber Incidents"]
       }
     ]
   },
@@ -379,8 +381,8 @@ const DATA = [
     themes: [
       {
         title: "Compliance &amp; Sustainability",
-        focus: "ผลการดำเนินงานด้าน ESG และ Sustainability ที่มีนัยสำคัญต่อกลุ่ม",
-        kris: ["% Material ESG Targets Achievement", "จำนวน Significant ESG Incidents"]
+        focus: "เป้าหมายด้านสิ่งแวดล้อม ความปลอดภัย ชุมชน และ Sustainability ที่มีนัยสำคัญต่อกลุ่ม",
+        kris: ["% Material ESG Targets ที่ต่ำกว่าเป้าหมาย", "จำนวน Significant ESG / EHS / Community Incidents"]
       }
     ]
   }
@@ -411,18 +413,15 @@ function renderThemeItem(theme){
     <div class="theme-item" data-theme data-search="${themeSearchStr(theme)}">
       <div class="theme-header" data-theme-toggle>
         <span class="theme-dot"></span>
-        <div class="theme-title">${theme.title}</div>
+        <div class="theme-text">
+          <div class="theme-title">${theme.title}</div>
+          <div class="theme-focus">${theme.focus}</div>
+        </div>
         <svg class="theme-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m6 9 6 6 6-6"/></svg>
       </div>
       <div class="theme-body">
         <div class="theme-body-inner">
           <div class="theme-detail">
-            <div class="detail-block">
-              <span class="info-icon" tabindex="0" data-tooltip="ประเด็นที่ Corporate ควรติดตาม">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="11"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-              </span>
-              <div class="theme-focus">${theme.focus}</div>
-            </div>
             <div class="detail-block">
               <span class="info-icon" tabindex="0" data-tooltip="Corporate KRI">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="11"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>

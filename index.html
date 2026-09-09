@@ -72,18 +72,6 @@
     display:flex; align-items:center; justify-content:space-between; gap:16px;
     flex-wrap:wrap; margin-bottom:16px;
   }
-  .toolbar-btns{ display:flex; gap:8px; }
-  .btn{
-    font-family:"Sarabun",sans-serif; font-size:13.5px; font-weight:600;
-    color: var(--navy); background: var(--card); border:1px solid var(--border);
-    padding:9px 16px; border-radius:9px; cursor:pointer;
-    transition: background .15s ease, border-color .15s ease, transform .05s ease;
-  }
-  .btn:hover{ background:#f5f7fc; border-color:#cfd7e8; }
-  .btn:active{ transform: translateY(1px); }
-  .btn.primary{ background: var(--navy); color:#fff; border-color: var(--navy); }
-  .btn.primary:hover{ background: var(--navy-2); }
-
   .search{
     position:relative; flex: 1 1 260px; max-width:320px;
   }
@@ -299,10 +287,6 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
       <input id="searchInput" type="text" placeholder="ค้นหา Risk Theme, ประเด็น หรือ KRI...">
     </div>
-    <div class="toolbar-btns">
-      <button class="btn" id="collapseAllBtn">Collapse All</button>
-      <button class="btn primary" id="expandAllBtn">Expand All</button>
-    </div>
   </div>
 
   <div class="layout">
@@ -474,9 +458,7 @@ function applyFilter(q){
   items.forEach(item => {
     const match = !q || item.dataset.search.includes(q);
     item.style.display = match ? '' : 'none';
-    if(match){ anyMatch = true; }
-    if(q && match) item.classList.add('open');
-    if(!q) item.classList.remove('open');
+    if(match){ anyMatch = true; item.classList.add('open'); }
   });
   return anyMatch;
 }
@@ -502,13 +484,6 @@ detailPanelEl.addEventListener('click', (e) => {
   header.closest('[data-theme]').classList.toggle('open');
 });
 
-document.getElementById('expandAllBtn').addEventListener('click', () => {
-  detailPanelEl.querySelectorAll('[data-theme]').forEach(t => t.classList.add('open'));
-});
-document.getElementById('collapseAllBtn').addEventListener('click', () => {
-  detailPanelEl.querySelectorAll('[data-theme]').forEach(t => t.classList.remove('open'));
-});
-
 searchInput.addEventListener('input', () => {
   const q = searchInput.value.trim().toLowerCase();
 
@@ -530,6 +505,7 @@ searchInput.addEventListener('input', () => {
 
 renderNav('');
 renderPanel(activeIndex);
+applyFilter('');
 </script>
 </body>
 </html>

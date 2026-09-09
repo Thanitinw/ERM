@@ -57,34 +57,47 @@
   .subtitle{ color: var(--sub); font-size:16px; margin:0; }
 
   .stats{
-    display:flex; flex-wrap:wrap; gap:12px;
-    margin: 22px 0 26px;
+    display:grid; grid-template-columns: repeat(3, 1fr);
+    gap:14px; margin: 22px 0 28px;
   }
   .stat{
-    background: var(--card); border:1px solid var(--border); border-radius:12px;
-    padding:12px 18px; box-shadow: var(--shadow);
-    display:flex; align-items:baseline; gap:8px;
+    background: var(--card); border:1px solid var(--border); border-radius:16px;
+    box-shadow: var(--shadow); padding:18px 20px;
+    display:flex; align-items:center; gap:14px;
+    transition: transform .15s ease, box-shadow .15s ease;
   }
-  .stat b{ font-family:"Inter",sans-serif; font-size:20px; color: var(--navy); }
-  .stat span{ color: var(--sub); font-size:13px; }
+  .stat:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(20,33,61,.08), 0 16px 28px -16px rgba(20,33,61,.28);
+  }
+  .stat-icon{
+    flex:0 0 auto; width:46px; height:46px; border-radius:13px;
+    display:flex; align-items:center; justify-content:center;
+    background: var(--stat-soft, var(--c1-soft)); color: var(--stat-accent, var(--c1));
+  }
+  .stat-icon svg{ width:22px; height:22px; }
+  .stat-text{ display:flex; flex-direction:column; gap:1px; min-width:0; }
+  .stat-num{
+    font-family:"Inter",sans-serif; font-size:26px; font-weight:800;
+    color: var(--navy); line-height:1.15;
+  }
+  .stat-label{ color: var(--sub); font-size:13px; font-weight:500; }
 
   .toolbar{
-    display:flex; align-items:center; justify-content:space-between; gap:16px;
+    display:flex; align-items:center; justify-content:flex-end; gap:16px;
     flex-wrap:wrap; margin-bottom:16px;
   }
-  .search{
-    position:relative; flex: 1 1 260px; max-width:320px;
+
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:"Sarabun",sans-serif; font-size:13.5px; font-weight:600;
+    color:#fff; background: var(--navy); border:1px solid var(--navy);
+    padding:9px 16px; border-radius:9px; cursor:pointer;
+    transition: background .15s ease, transform .05s ease;
   }
-  .search input{
-    width:100%; font-family:"Sarabun",sans-serif; font-size:14px;
-    padding:9px 14px 9px 36px; border-radius:9px; border:1px solid var(--border);
-    background: var(--card); color:var(--ink); outline:none;
-  }
-  .search input:focus{ border-color: var(--c1); box-shadow:0 0 0 3px #2f6fed22; }
-  .search svg{
-    position:absolute; left:12px; top:50%; transform:translateY(-50%);
-    width:15px; height:15px; color:#9aa2b6; pointer-events:none;
-  }
+  .btn:hover{ background: var(--navy-2); }
+  .btn:active{ transform: translateY(1px); }
+  .btn svg{ width:15px; height:15px; flex:0 0 auto; }
 
   .layout{
     display:grid; grid-template-columns: 300px 1fr;
@@ -106,7 +119,6 @@
   }
   .nav-item:hover{ background:#f5f7fc; }
   .nav-item.active{ background: var(--soft, #eaf1ff); }
-  .nav-item.dim{ opacity:.4; }
 
   .nav-badge{
     flex:0 0 auto; width:28px; height:28px; border-radius:9px;
@@ -157,9 +169,11 @@
   }
   .theme-header:hover{ background:#fbfcfe; }
 
-  .theme-dot{
-    flex:0 0 auto; width:7px; height:7px; border-radius:50%;
-    background: var(--accent, var(--c1)); margin-top:7px;
+  .theme-num{
+    flex:0 0 auto; min-width:28px; height:20px; padding:0 5px; border-radius:6px;
+    display:flex; align-items:center; justify-content:center;
+    font-family:"Inter",sans-serif; font-weight:700; font-size:11px;
+    color:#fff; background: var(--accent, var(--c1)); margin-top:1px;
   }
   .theme-text{
     flex:1 1 auto; min-width:0;
@@ -189,7 +203,7 @@
   .theme-body-inner{ overflow:hidden; }
 
   .theme-detail{
-    padding:2px 24px 18px 40px;
+    padding:2px 24px 18px 62px;
     display:flex; flex-direction:column; gap:12px;
   }
 
@@ -203,10 +217,6 @@
     background: var(--accent, var(--c1)); margin-top:6px;
   }
 
-  .no-results{
-    display:none; text-align:center; padding:40px 20px; color: var(--sub); font-size:14px;
-  }
-
   @media (max-width: 900px){
     .layout{ grid-template-columns: 1fr; }
     .domain-nav{
@@ -216,8 +226,12 @@
     .nav-item{ flex:0 0 auto; padding:9px 12px; }
     .nav-count{ display:none; }
     .theme-header{ padding:14px 16px; }
-    .theme-detail{ padding:2px 16px 14px 34px; }
+    .theme-detail{ padding:2px 16px 14px 54px; }
     .panel-header{ padding:18px 16px; }
+  }
+
+  @media (max-width: 560px){
+    .stats{ grid-template-columns: 1fr; }
   }
 
   @media print{
@@ -241,26 +255,50 @@
   </div>
 
   <div class="stats">
-    <div class="stat"><b>6</b><span>Risk Domains</span></div>
-    <div class="stat"><b>8</b><span>Corporate Risk Themes</span></div>
-    <div class="stat"><b>18</b><span>Corporate KRI</span></div>
+    <div class="stat" style="--stat-accent:var(--c1);--stat-soft:var(--c1-soft)">
+      <span class="stat-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+      </span>
+      <span class="stat-text">
+        <span class="stat-num">6</span>
+        <span class="stat-label">Risk Domains</span>
+      </span>
+    </div>
+    <div class="stat" style="--stat-accent:var(--c3);--stat-soft:var(--c3-soft)">
+      <span class="stat-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg>
+      </span>
+      <span class="stat-text">
+        <span class="stat-num">8</span>
+        <span class="stat-label">Corporate Risk Themes</span>
+      </span>
+    </div>
+    <div class="stat" style="--stat-accent:var(--c2);--stat-soft:var(--c2-soft)">
+      <span class="stat-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="20" x2="6" y2="12"/><line x1="12" y1="20" x2="12" y2="6"/><line x1="18" y1="20" x2="18" y2="14"/></svg>
+      </span>
+      <span class="stat-text">
+        <span class="stat-num">18</span>
+        <span class="stat-label">Corporate KRI</span>
+      </span>
+    </div>
   </div>
 
   <div class="toolbar">
-    <div class="search">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
-      <input id="searchInput" type="text" placeholder="ค้นหา Risk Theme, ประเด็น หรือ KRI...">
-    </div>
+    <button class="btn" id="downloadBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M5 21h14"/></svg>
+      Download Excel
+    </button>
   </div>
 
   <div class="layout">
     <nav class="domain-nav" id="domainNav"></nav>
     <section class="detail-panel" id="detailPanel"></section>
   </div>
-  <div class="no-results" id="noResults">ไม่พบรายการที่ตรงกับคำค้นหา</div>
 
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
 const DATA = [
   {
@@ -337,29 +375,18 @@ const DATA = [
 
 const domainNavEl = document.getElementById('domainNav');
 const detailPanelEl = document.getElementById('detailPanel');
-const searchInput = document.getElementById('searchInput');
-const noResults = document.getElementById('noResults');
 
 let activeIndex = 0;
-
-function themeSearchStr(theme){
-  return (theme.title+' '+theme.focus+' '+theme.kris.join(' ')).toLowerCase();
-}
-
-function domainMatchCount(domain, q){
-  if(!q) return domain.themes.length;
-  return domain.themes.filter(t => themeSearchStr(t).includes(q)).length;
-}
 
 function renderKris(kris){
   return kris.map(k => `<li>${k}</li>`).join('');
 }
 
-function renderThemeItem(theme){
+function renderThemeItem(theme, label){
   return `
-    <div class="theme-item" data-theme data-search="${themeSearchStr(theme)}">
+    <div class="theme-item" data-theme>
       <div class="theme-header" data-theme-toggle>
-        <span class="theme-dot"></span>
+        <span class="theme-num">${label}</span>
         <div class="theme-text">
           <div class="theme-title">${theme.title}</div>
           <div class="theme-focus"><b>ติดตาม:</b> ${theme.focus}</div>
@@ -376,19 +403,16 @@ function renderThemeItem(theme){
     </div>`;
 }
 
-function renderNav(q){
-  domainNavEl.innerHTML = DATA.map((g, i) => {
-    const count = domainMatchCount(g, q);
-    const dim = q && count === 0;
-    return `
-      <button class="nav-item ${i===activeIndex?'active':''} ${dim?'dim':''}" data-domain="${i}" style="--accent:${g.accent};--soft:${g.soft}">
+function renderNav(){
+  domainNavEl.innerHTML = DATA.map((g, i) => `
+      <button class="nav-item ${i===activeIndex?'active':''}" data-domain="${i}" style="--accent:${g.accent};--soft:${g.soft}">
         <span class="nav-badge">${g.num}</span>
         <span class="nav-text">
           <span class="nav-name">${g.name}</span>
           <span class="nav-count">${g.themes.length} Risk Theme${g.themes.length > 1 ? 's' : ''}</span>
         </span>
-      </button>`;
-  }).join('');
+      </button>`
+  ).join('');
 }
 
 function renderPanel(index){
@@ -403,28 +427,19 @@ function renderPanel(index){
       </div>
     </div>
     <div class="theme-list">
-      ${g.themes.map(renderThemeItem).join('')}
+      ${g.themes.map((t, i) => renderThemeItem(t, `${g.num}.${i + 1}`)).join('')}
     </div>`;
 }
 
-function applyFilter(q){
-  const items = detailPanelEl.querySelectorAll('[data-theme]');
-  let anyMatch = false;
-  items.forEach(item => {
-    const match = !q || item.dataset.search.includes(q);
-    item.style.display = match ? '' : 'none';
-    if(match){ anyMatch = true; item.classList.add('open'); }
-  });
-  return anyMatch;
+function openAllThemes(){
+  detailPanelEl.querySelectorAll('[data-theme]').forEach(item => item.classList.add('open'));
 }
 
 function selectDomain(index){
   activeIndex = index;
-  const q = searchInput.value.trim().toLowerCase();
-  renderNav(q);
+  renderNav();
   renderPanel(index);
-  const anyMatch = applyFilter(q);
-  noResults.style.display = (q && !anyMatch) ? 'block' : 'none';
+  openAllThemes();
 }
 
 domainNavEl.addEventListener('click', (e) => {
@@ -439,28 +454,32 @@ detailPanelEl.addEventListener('click', (e) => {
   header.closest('[data-theme]').classList.toggle('open');
 });
 
-searchInput.addEventListener('input', () => {
-  const q = searchInput.value.trim().toLowerCase();
+document.getElementById('downloadBtn').addEventListener('click', () => {
+  const rows = [];
+  DATA.forEach(g => {
+    g.themes.forEach(t => {
+      t.kris.forEach(k => {
+        rows.push({
+          "Risk Domain": `${g.num}. ${g.name}`,
+          "Corporate Risk Theme": t.title.replace(/&amp;/g, '&'),
+          "ประเด็นที่ Corporate ควรติดตาม": t.focus,
+          "Corporate KRI": k
+        });
+      });
+    });
+  });
 
-  if(q){
-    const counts = DATA.map(g => domainMatchCount(g, q));
-    if(counts[activeIndex] === 0){
-      const firstIdx = counts.findIndex(c => c > 0);
-      if(firstIdx !== -1){
-        activeIndex = firstIdx;
-        renderPanel(activeIndex);
-      }
-    }
-  }
+  const ws = XLSX.utils.json_to_sheet(rows);
+  ws['!cols'] = [{ wch: 26 }, { wch: 38 }, { wch: 50 }, { wch: 50 }];
 
-  renderNav(q);
-  const anyMatch = applyFilter(q);
-  noResults.style.display = (q && !anyMatch) ? 'block' : 'none';
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "Risk Themes & KRI");
+  XLSX.writeFile(wb, "Corporate_Risk_Themes_and_KRI.xlsx");
 });
 
-renderNav('');
+renderNav();
 renderPanel(activeIndex);
-applyFilter('');
+openAllThemes();
 </script>
 </body>
 </html>

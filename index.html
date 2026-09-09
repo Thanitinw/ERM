@@ -112,10 +112,10 @@
 
   .group-header{
     display:flex; align-items:center; gap:14px;
-    padding:16px 20px; cursor:pointer; user-select:none;
+    padding:16px 20px; user-select:none;
     background: var(--card);
+    border-bottom:1px solid var(--border-soft);
   }
-  .group-header:hover{ background:#fafbfd; }
 
   .g-badge{
     flex:0 0 auto; width:34px; height:34px; border-radius:10px;
@@ -133,32 +133,43 @@
   }
   .g-count b{ color: var(--accent, var(--c1)); font-weight:700; }
 
-  .chev{
-    flex:0 0 auto; width:20px; height:20px; color:#8a93a8;
-    transition: transform .25s ease;
-  }
-  .group.open .chev{ transform: rotate(180deg); }
+  .theme-list{ display:flex; flex-direction:column; }
 
-  .group-body{
+  .theme-item{ border-top:1px solid var(--border-soft); }
+  .theme-item:first-child{ border-top:none; }
+
+  .theme-header{
+    display:flex; align-items:center; gap:10px;
+    padding:14px 20px; cursor:pointer; user-select:none;
+  }
+  .theme-header:hover{ background:#fbfcfe; }
+
+  .theme-dot{
+    flex:0 0 auto; width:7px; height:7px; border-radius:50%;
+    background: var(--accent, var(--c1));
+  }
+  .theme-title{
+    flex:1 1 auto; min-width:0;
+    font-weight:600; color: var(--navy); font-size:14.5px; line-height:1.45;
+  }
+  .theme-chev{
+    flex:0 0 auto; width:16px; height:16px; color:#9aa2b6;
+    transition: transform .22s ease;
+  }
+  .theme-item.open .theme-chev{ transform: rotate(180deg); }
+
+  .theme-body{
     display:grid;
     grid-template-rows: 0fr;
-    transition: grid-template-rows .28s ease;
+    transition: grid-template-rows .25s ease;
   }
-  .group.open .group-body{ grid-template-rows: 1fr; }
-  .group-body-inner{ overflow:hidden; }
+  .theme-item.open .theme-body{ grid-template-rows: 1fr; }
+  .theme-body-inner{ overflow:hidden; }
 
-  .theme-table{
-    border-top:1px solid var(--border-soft);
+  .theme-detail{
+    padding:2px 20px 16px 36px;
+    display:flex; flex-direction:column; gap:12px;
   }
-  .theme-row{
-    display:flex;
-    flex-direction:column;
-    gap:12px;
-    padding:16px 20px;
-    border-top:1px solid var(--border-soft);
-  }
-  .theme-row:first-child{ border-top:none; }
-  .theme-row:hover{ background:#fbfcfe; }
 
   .col-label{
     font-family:"Inter",sans-serif; font-size:10.5px; font-weight:700;
@@ -166,9 +177,6 @@
     margin-bottom:4px;
   }
 
-  .theme-title{
-    font-weight:600; color: var(--navy); font-size:14.5px; line-height:1.45;
-  }
   .theme-focus{
     color:#3c4359; font-size:14px; line-height:1.55;
   }
@@ -200,7 +208,8 @@
 
   @media (max-width: 680px){
     .groups{ grid-template-columns: 1fr; }
-    .theme-row{ padding:14px 16px; }
+    .theme-header{ padding:14px 16px; }
+    .theme-detail{ padding:2px 16px 14px 32px; }
     .group-header{ padding:14px 16px; }
   }
 
@@ -208,9 +217,9 @@
     body{ background:#fff; padding:0; }
     .toolbar{ display:none; }
     .groups{ grid-template-columns: 1fr; }
-    .group-body{ grid-template-rows: 1fr !important; }
+    .theme-body{ grid-template-rows: 1fr !important; }
     .group{ box-shadow:none; break-inside:avoid; }
-    .chev{ display:none; }
+    .theme-chev{ display:none; }
   }
 </style>
 </head>
@@ -329,41 +338,43 @@ function renderKris(kris){
   return kris.map(k => `<li>${k}</li>`).join('');
 }
 
-function renderThemeRow(theme){
+function renderThemeItem(theme){
   return `
-    <div class="theme-row" data-search="${(theme.title+' '+theme.focus+' '+theme.kris.join(' ')).toLowerCase()}">
-      <div class="col">
-        <div class="col-label">Corporate Risk Theme</div>
+    <div class="theme-item" data-theme data-search="${(theme.title+' '+theme.focus+' '+theme.kris.join(' ')).toLowerCase()}">
+      <div class="theme-header" data-theme-toggle>
+        <span class="theme-dot"></span>
         <div class="theme-title">${theme.title}</div>
+        <svg class="theme-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m6 9 6 6 6-6"/></svg>
       </div>
-      <div class="col">
-        <div class="col-label">ประเด็นที่ Corporate ควรติดตาม</div>
-        <div class="theme-focus">${theme.focus}</div>
-      </div>
-      <div class="col">
-        <div class="col-label">ตัวอย่าง Corporate KRI</div>
-        <ul class="kri-list">${renderKris(theme.kris)}</ul>
+      <div class="theme-body">
+        <div class="theme-body-inner">
+          <div class="theme-detail">
+            <div>
+              <div class="col-label">ประเด็นที่ Corporate ควรติดตาม</div>
+              <div class="theme-focus">${theme.focus}</div>
+            </div>
+            <div>
+              <div class="col-label">ตัวอย่าง Corporate KRI</div>
+              <ul class="kri-list">${renderKris(theme.kris)}</ul>
+            </div>
+          </div>
+        </div>
       </div>
     </div>`;
 }
 
 function renderGroup(g){
   return `
-    <div class="group open" style="--accent:${g.accent}" data-group>
-      <div class="group-header" data-toggle>
+    <div class="group" style="--accent:${g.accent}" data-group>
+      <div class="group-header">
         <div class="g-badge">${g.num}</div>
         <div class="g-titles">
           <div class="g-name">${g.num}. ${g.name}</div>
           <div class="g-count"><b>${g.themes.length}</b> Risk Theme${g.themes.length > 1 ? 's' : ''}</div>
         </div>
-        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m6 9 6 6 6-6"/></svg>
       </div>
-      <div class="group-body">
-        <div class="group-body-inner">
-          <div class="theme-table">
-            ${g.themes.map(renderThemeRow).join('')}
-          </div>
-        </div>
+      <div class="theme-list">
+        ${g.themes.map(renderThemeItem).join('')}
       </div>
     </div>`;
 }
@@ -371,16 +382,16 @@ function renderGroup(g){
 groupsEl.innerHTML = DATA.map(renderGroup).join('');
 
 groupsEl.addEventListener('click', (e) => {
-  const header = e.target.closest('[data-toggle]');
+  const header = e.target.closest('[data-theme-toggle]');
   if(!header) return;
-  header.closest('[data-group]').classList.toggle('open');
+  header.closest('[data-theme]').classList.toggle('open');
 });
 
 document.getElementById('expandAllBtn').addEventListener('click', () => {
-  document.querySelectorAll('[data-group]').forEach(g => g.classList.add('open'));
+  document.querySelectorAll('[data-theme]').forEach(t => t.classList.add('open'));
 });
 document.getElementById('collapseAllBtn').addEventListener('click', () => {
-  document.querySelectorAll('[data-group]').forEach(g => g.classList.remove('open'));
+  document.querySelectorAll('[data-theme]').forEach(t => t.classList.remove('open'));
 });
 
 const searchInput = document.getElementById('searchInput');
@@ -391,17 +402,18 @@ searchInput.addEventListener('input', () => {
   let anyVisibleTotal = false;
 
   document.querySelectorAll('[data-group]').forEach(group => {
-    const rows = group.querySelectorAll('.theme-row');
+    const items = group.querySelectorAll('[data-theme]');
     let groupHasMatch = false;
 
-    rows.forEach(row => {
-      const match = !q || row.dataset.search.includes(q);
-      row.style.display = match ? '' : 'none';
+    items.forEach(item => {
+      const match = !q || item.dataset.search.includes(q);
+      item.style.display = match ? '' : 'none';
       if(match) groupHasMatch = true;
+      if(q && match) item.classList.add('open');
+      if(!q) item.classList.remove('open');
     });
 
     group.style.display = groupHasMatch ? '' : 'none';
-    if(q && groupHasMatch) group.classList.add('open');
     if(groupHasMatch) anyVisibleTotal = true;
   });
 
